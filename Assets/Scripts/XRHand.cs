@@ -23,17 +23,27 @@ public class XRHand : MonoBehaviour
             // Grip!
             handAnim.SetBool("Gripped", true);
 
-            grabbedObject = hoveredObject;
-            hoveredObject.OnGrabStart(this);
-            hoveredObject = null;
+            if(hoveredObject != null)
+            {
+                grabbedObject = hoveredObject;
+                hoveredObject.OnGrabStart(this);
+                hoveredObject = null;
+            }
+            
         }
 
         if (Input.GetButtonUp(gripButton))
         {
-            // UnGrip!
+            
             handAnim.SetBool("Gripped", false);
-            grabbedObject.OnGrabEnd();
-            grabbedObject = null;
+
+            // UnGrip!
+            if(grabbedObject != null)
+            {
+                grabbedObject.OnGrabEnd();
+                grabbedObject = null;
+            }
+            
         }
 
     }
@@ -42,6 +52,7 @@ public class XRHand : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var grabbable = other.GetComponent<GrabbableObject>();
+
 
         if(grabbable != null)
         {

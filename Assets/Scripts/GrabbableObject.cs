@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GrabbableObject : MonoBehaviour
 {
-    public MeshRenderer rend;
+    private MeshRenderer rend;
     public Color hoveredColor;
 
     private Color defaultColor;
@@ -12,6 +12,7 @@ public class GrabbableObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        rend = GetComponent<MeshRenderer>();
         defaultColor = rend.material.color;
     }
 
@@ -21,24 +22,32 @@ public class GrabbableObject : MonoBehaviour
         
     }
 
-    public void OnHoverStart()
+    public virtual void OnHoverStart()
     {
-        rend.material.color = hoveredColor;
+        if(rend != null)   //  to avoid nullreference exception
+        {
+            rend.material.color = hoveredColor;
+        }
+        
     }
 
-    public void OnHoverEnd()
+    public virtual void OnHoverEnd()
     {
-        rend.material.color = defaultColor;
+        if(rend != null)
+        {
+            rend.material.color = defaultColor;
+        }
+       
     }
 
-    public void OnGrabStart(XRHand hand)
+    public virtual void OnGrabStart(XRHand hand)
     {
         transform.SetParent(hand.transform);
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    public void OnGrabEnd()
+    public virtual void OnGrabEnd()
     {
         transform.SetParent(null);
         GetComponent<Rigidbody>().useGravity = true;
