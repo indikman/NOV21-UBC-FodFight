@@ -8,9 +8,10 @@ public class FoodItem : ThrowableObject
     {
         if (collision.gameObject.CompareTag("target"))
         {
-            Destroy(gameObject);
+            GameManager.instance.TargetHit();
 
-            Debug.Log("Hit!!!");
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
     }
 }
